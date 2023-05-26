@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "709568849138",
+    "project_id": "where-s-waldo-9b60b",
+    "storage_bucket": "where-s-waldo-9b60b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:709568849138:android:0cfde51074750d8122dc6b",
+        "android_client_info": {
+          "package_name": "com.example.whereswaldo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "709568849138-en2tg7e5f833opho7ohh6ckd3d1aavut.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhTl3zv3-vMKNXJv2GjkI2p6Jb6A-sCkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "709568849138-en2tg7e5f833opho7ohh6ckd3d1aavut.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
