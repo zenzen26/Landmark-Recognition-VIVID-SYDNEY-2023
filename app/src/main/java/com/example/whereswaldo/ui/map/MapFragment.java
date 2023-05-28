@@ -1,16 +1,18 @@
 package com.example.whereswaldo.ui.map;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.whereswaldo.R;
-import com.example.whereswaldo.databinding.FragmentNotificationsBinding;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,8 +32,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 public class MapFragment extends Fragment {
-
-    private FragmentNotificationsBinding binding;
 
     GoogleMap mGoogleMap;
     DatabaseReference coordinatesRef; // Firebase reference
@@ -76,7 +76,6 @@ public class MapFragment extends Fragment {
                         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding);
                         googleMap.animateCamera(cameraUpdate);
                     }
-
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -124,6 +123,17 @@ public class MapFragment extends Fragment {
                                     TextView detailsTextView = bottomSheetView.findViewById(R.id.details);
                                     detailsTextView.setText(details != null ? details : "");
 
+                                    // Add a "GO" button to the bottom sheet
+                                    Button goButton = bottomSheetView.findViewById(R.id.go_button);
+                                    goButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            // Start the navigation to the selected location
+                                            startNavigation(latitude, longitude);
+                                            bottomSheetDialog.dismiss();
+                                        }
+                                    });
+
                                     // Set the view of the BottomSheetDialog
                                     bottomSheetDialog.setContentView(bottomSheetView);
 
@@ -150,9 +160,13 @@ public class MapFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    // Method to start the navigation to the selected location
+    private void startNavigation(double latitude, double longitude) {
+        // Use the latitude and longitude to start the navigation using the desired navigation library or API.
+        // For example, if you are using Google Maps, you can launch the Google Maps app with the destination location.
+        String uri = "google.navigation:q=" + latitude + "," + longitude;
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        intent.setPackage("com.google.android.apps.maps");
+        startActivity(intent);
     }
 }

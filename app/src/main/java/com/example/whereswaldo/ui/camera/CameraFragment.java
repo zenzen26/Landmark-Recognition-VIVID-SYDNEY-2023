@@ -1,14 +1,9 @@
 package com.example.whereswaldo.ui.camera;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
-import android.graphics.ColorSpace;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -25,16 +20,14 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.whereswaldo.R;
 import com.example.whereswaldo.ml.ModelVivid;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import com.example.whereswaldo.R;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
@@ -134,16 +127,16 @@ public class CameraFragment extends Fragment {
                     maxPos = i;
                 }
             }
-            String[] classes = {"Central Park", "Central Station", "Chinatown", "Convergence", "Darling Harbour", "Darling Square Alley", "Darling Square Foodcourt", "Ephemeral Oceania", "Haymarket", "Macula", "Market City", "Museum Of Contemporary Art", "Queen Victoria Building", "Sydney Harbour Bridge", "Sydney Opera House", "UTS Building 10", "UTS Building 2"};
+            String[] classes = {"Central Park", "Central Station", "Chinatown", "Convergence", "Darling Harbour", "Ephemeral Oceania", "Golden Water Mouth", "Macula", "Market City", "Museum Of Contemporary Art", "Queen Victoria Building", "Sydney Harbour Bridge", "Sydney Opera House", "UTS Building 2"};
             String className = classes[maxPos];
 
-            openBottomSheetDialog(className);
+            openImageInfo(className);
 
             // Set an OnClickListener to the imageView to reopen the bottom sheet dialog
             imageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    openBottomSheetDialog(className);
+                    openImageInfo(className);
                 }
             });
 
@@ -154,10 +147,9 @@ public class CameraFragment extends Fragment {
         }
     }
 
-    private void openBottomSheetDialog(String className) {
-        // Retrieve data from Firebase based on the className
+    private void openImageInfo (String classname){
         DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
-        Query query = databaseRef.orderByChild("Name").equalTo(className);
+        Query query = databaseRef.orderByChild("Name").equalTo(classname);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -167,38 +159,27 @@ public class CameraFragment extends Fragment {
                     String name = snapshot.child("Name").getValue(String.class);
                     String details = snapshot.child("Details").getValue(String.class);
                     String artist = snapshot.child("Artist").getValue(String.class);
+                    String imageUri = snapshot.child("Image").getValue(String.class);
+                    double latitude = snapshot.child("Latitude").getValue(Double.class);
+                    double longitude = snapshot.child("Longitude").getValue(Double.class);
 
-                    // Create a BottomSheetDialog
-                    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
+                    // Pass the information to the new screen (com.example.whereswaldo.ui.camera.ClassifiedImageActivity)
+                    Intent intent = new Intent(getContext(), ClassifiedImageActivity.class);
+                    intent.putExtra("imageUri", imageUri);
+                    intent.putExtra("name", name);
+                    intent.putExtra("location", location);
+                    intent.putExtra("artist", artist);
+                    intent.putExtra("details", details);
+                    intent.putExtra("latitude", latitude);
+                    intent.putExtra("longitude", longitude);
 
-                    // Inflate the layout for the bottom sheet
-                    View bottomSheetView = getLayoutInflater().inflate(R.layout.dialog_landmark, null);
-
-                    // Set the title of the location in the TextView
-                    TextView locationNameTextView = bottomSheetView.findViewById(R.id.location_name);
-                    locationNameTextView.setText(name);
-
-                    // Set the location, artist, and details in the TextViews
-                    TextView locationTextView = bottomSheetView.findViewById(R.id.location);
-                    locationTextView.setText(location != null ? location : "");
-
-                    TextView artistTextView = bottomSheetView.findViewById(R.id.artist);
-                    artistTextView.setText(artist); // Set the artist value if applicable
-
-                    TextView detailsTextView = bottomSheetView.findViewById(R.id.details);
-                    detailsTextView.setText(details != null ? details : "");
-
-                    // Set the view of the BottomSheetDialog
-                    bottomSheetDialog.setContentView(bottomSheetView);
-
-                    // Show the BottomSheetDialog
-                    bottomSheetDialog.show();
+                    startActivity(intent);
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Handle database error
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
