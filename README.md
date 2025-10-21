@@ -1,4 +1,4 @@
-# Overview
+# 🔹 Overview
 This project creates an innovative image classification app designed to amplify the VIVID Sydney festival experience by spotlighting the artists behind the art installations. The app's primary motivation is to provide a platform for these talented artists to be recognized and appreciated for their remarkable contributions. By utilizing a robust convolutional neural network (CNN) architecture, the app enables users to quickly identify famous landmarks and discover additional works by the respective artists showcased during VIVID Sydney.
 
 In this repository, please view SqueezeNet.ipynb and MobileNet.ipynb for the python notebook. Further details of the report can be seen in the word document.
