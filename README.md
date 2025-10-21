@@ -8,8 +8,10 @@ Upload a picture, and it will show you the location and details of the installat
 
 # 🛠️ Functionality
 - **Find the location of an art installation**
+
   Users can upload a picture of an art installation found online, and the app will pinpoint its exact location on the map.
 - **Learn more about an art installation**
+
   Users can take or upload a picture, and the app will display details such as the artist, background story, and inspiration behind the work.
 
 # 🔍 How It Works
