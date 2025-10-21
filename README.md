@@ -18,3 +18,7 @@ Upload a picture, and it will show you the location and details of the installat
 - Trained SqueezeNet and MobileNet (CNN architectures) to recognize installations or landmarks from uploaded photos.
 - Set up a Firebase database to store detailed information about each landmark or installation.
 - When a user uploads a picture, the trained model identifies the installation and retrieves related information from Firebase.
+
+# 🎬 Demo
+**https://youtu.be/1bOKtAUkKJs?t=102**
+
